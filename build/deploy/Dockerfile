@@ -7,7 +7,7 @@ FROM registry.access.redhat.com/ubi8/ubi-minimal
 # tar - used by kubectl cp
 RUN microdnf update -y \
     && rpm --erase --nodeps tzdata \
-    && microdnf install tzdata hostname tar gzip xz -y \
+    && microdnf install tzdata hostname tar gzip xz ethtool iproute -y \
     && rm -rf /var/cache/yum
 
 RUN mkdir /usr/local/lib/cockroach /cockroach /licenses /docker-entrypoint-initdb.d
@@ -28,3 +28,4 @@ ENV COCKROACH_CHANNEL=official-docker
 
 EXPOSE 26257 8080
 ENTRYPOINT ["/cockroach/cockroach.sh"]
+CMD ["start-single-node", "--insecure"]
